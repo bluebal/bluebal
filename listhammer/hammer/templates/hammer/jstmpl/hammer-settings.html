@@ -1,0 +1,52 @@
+<div class="form-horizontal">
+    <h4 class="col-sm-offset-1">Settings</h4>
+</div>
+<div class="form-horizontal">
+    <label class="col-sm-2 control-label">Name</label>
+    <div class="input-group col-md-9">
+        <input type="text" name="hammer-name" data-bind="value: name" class="form-control" /> 
+    </div>
+</div>
+<hr />
+<form method="post" action="" class="form-horizontal" data-bind="submit: submitNewShare">
+    <label class="col-sm-2 control-label">Sharing</label>
+    <div class="input-group col-md-7">
+        <input type="text" name="sharee" class="form-control" placeholder="Enter email address or username to share" /> 
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-plus-sign"></span> Share
+            </button>
+        </span>
+    </div>
+</form>
+<p></p>
+<div class="row">
+    <div class="col-md-7 col-md-offset-2">
+        <table class="table table-condensed table-bordered table-inset hammer-shares">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Add Items</th>
+                    <th>Remove Items</th>
+                    <th>Change Items</th>
+                    <th>X</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: { data: shares }">
+                <tr>
+                    <td data-bind="text: sharee"></td>
+                    <td><input type="checkbox" data-bind="checked: can_add" /></td>
+                    <td><input type="checkbox" data-bind="checked: can_remove" /></td>
+                    <td><input type="checkbox" data-bind="checked: can_change" /></td>
+                    <td>
+                        <a href="#" title="Delete share" data-bind="click: $parent.destroyShare">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<p class="text-right">
+    <a class="text-danger" href="#" data-bind="click: $root.destroyHammer"><small>Delete this hammer</small></a>
+</p>

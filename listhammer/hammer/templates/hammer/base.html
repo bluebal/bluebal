@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>{% block title %}Page title{% endblock title %}</title>
+	<meta name="description" content="{% block description %}{% endblock description %}">
+	<meta name="author" content="{% block author %}Lenny Mahnke{% endblock author %}">
+
+	<!-- Mobile viewport optimized: j.mp/bplateviewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- Place favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+	<link rel="shortcut icon" href="/favicon.ico">
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+	{% block css %}{% endblock %}
+	{% block head %}{% endblock head %}
+	</head>
+
+	{% block body_open_tag %}<body>{% endblock %}
+	{% block body %}{% endblock body %}
+	{% block javascript %}{% endblock javascript %}
+	{% block javascript_templates %}{% endblock javascript_templates %}
+	</body>
+</html>

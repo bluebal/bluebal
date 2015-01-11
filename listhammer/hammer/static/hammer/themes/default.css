@@ -1,0 +1,153 @@
+
+/* Default theme for ListHammer application */
+body{
+    background: #333; 
+}
+
+h4{
+  /*font-size: 18px;*/
+  /*font-weight: bold;*/
+  /*margin: 12px 0 0 0;*/
+  /*padding: 9px 0;*/
+  /*color: #444;*/
+}
+
+.hammer-form{
+}
+
+.app-wrapper{
+    /*max-width: 900px;*/
+    margin: auto;
+    background: #fff;
+    position: relative;
+    min-height: 500px;
+}
+
+
+.header-hammer-title{
+    /*background: #fff;*/
+    /*color: #555;*/
+    text-align: center;
+    padding: 2px 5px;
+    /*border-radius: 2px;*/
+    font-size: 120%;
+    /*border-bottom: 1px solid #bdbdbd;*/
+}
+.hammer-title{
+    /*font-size: 16px;*/
+    font-weight: bold;
+    /*line-height: 20px;*/
+    padding: 0 1em;
+    /*color: #fff;*/
+}
+.user-dropdown{
+    /*margin: 5px 2px 0;*/
+}
+.link-group{
+    /*position: absolute;*/
+    /*top:0;*/
+}
+.app-options{
+    /*left: 5px;*/
+}
+.hammer-options{
+    /*right: 5px;*/
+}
+.hammer-settings{
+    padding: 5px;
+    background: #eee;
+}
+.hammer-entries{
+/*    padding: 1px;
+    background: #777;
+*/
+}
+.hammer-entry{
+    padding: 5px 7px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    border-bottom: 1px dashed #ccc;
+}
+.hammer-entry:hover{
+    background-color: #eee;
+    color: #000;
+}
+.hammer-entry.active{
+    background: #f2f2f2;
+    color: #555;
+    font-weight: bold;
+    cursor: default;
+    border-bottom-style: solid;
+}
+.shared-hammer-entry{
+    background: #F9F4E2;
+    color: #7B8034;
+}
+
+.quick-add-form{
+    padding: 10px;
+    margin: 0;
+    background: #333;
+}
+table.hammer-shares{
+    text-align: center;
+}
+    .hammer-shares tr td:first-child,.hammer-shares tr th:first-child{
+        width: 100px;
+        text-align: left;
+    }
+    .hammer-shares tr th{
+        white-space: nowrap;
+        background: #333;
+        color: #fff;
+        font-weight: normal;
+        text-align: center;
+    }
+
+.hammer-items{
+/*    border: 1px solid #ddd;
+    border-radius: 7px;
+    padding: 0 10px 20px 5px;
+*/
+}
+.hammer-item{
+    color: #888;
+    font-size: 18px;
+    padding: 5px;
+    border-bottom: 1px dashed #ccc;
+}
+.hammer-item .handle{
+    cursor: move;
+    font-size: 15px;
+    padding: 0 8px;
+    color: #999;
+}
+
+.hammer-item .complete{
+}
+.hammer-item .complete .item-text{
+    text-decoration: line-through;
+    color: #777;
+}
+.hammer-item:hover .item-settings{
+    display: block;
+}
+
+.item-title a{
+   color: #333;
+   text-decoration: none;
+   font-size: 13px;
+}
+.item-title a:focus{
+   outline: none;
+}
+.item-settings{
+    display: none;
+    opacity: .5;
+}
+.item-settings:hover{
+    opacity: 1;
+}
+
+.user-settings{
+}

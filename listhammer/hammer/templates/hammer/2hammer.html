@@ -1,0 +1,87 @@
+{% extends 'page.html' %}
+
+{% block title %}Hammer - A shitty list making thing{% endblock %}
+{% block body_open_tag %}<body data-bind="css: user.app_theme">{% endblock %}
+
+{% block container %}
+<div class="app-wrapper">
+    <div class="user-settings" data-bind="template:{ name: 'tmpl-user-settings' }"></div>
+    
+    <div class="hammer-list" data-bind="visible: !selectedHammer()">
+        <div class="hammer-form quick-add-form">
+            <form method="post" action="" data-bind="submit: submitNewHammer">
+                <div class="input-group input-group-md">
+                    <input type="text" name="hammer-name" placeholder="New Hammer" class="form-control" /> 
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-plus-sign"></span>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+        <div class="hammer-entries" data-bind="template:{ foreach: hammerStream, name: 'tmpl-hammer-entry' }"></div>
+    </div>
+    
+    
+    
+    <div class="hammer-selected-wrapper" data-bind="visible: selectedHammer, with: selectedHammer">
+        <div class="hammer-selected" data-bind="css: 'theme-'+theme()">
+<!-- HAMMER SETTINGS -->
+            <!-- ko ifnot: shared -->
+            <div class="hammer-settings-wrapper" data-bind="visible: settingsVisible">
+                <div class="hammer-settings" data-bind="template:{ name: 'tmpl-hammer-settings' }"></div>
+            </div>
+            <!-- /ko -->
+    
+<!-- HAMMER ITEM FORM -->
+            <!-- ko if: can_add -->
+            <div class="quick-add-form">
+                <form method="post" action="" data-bind="submit: submitNewItem">
+                    <div class="input-group input-group-md">
+                        <input type="text" max_length="100" name="hammer-name" placeholder="Add item" class="form-control" />
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <!-- /ko -->
+    
+<!-- HAMMER ITEMS -->
+            <div data-bind="template:{ name: 'tmpl-hammer-item', foreach: items }, hammerList: $data"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block css %}
+{{block.super}}
+<!--<link rel="stylesheet" href="{{STATIC_URL}}hammer/themes/default.css" />-->
+<link rel="stylesheet" href="{{STATIC_URL}}hammer/themes.css" />
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/store.js/1.3.14/store.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+<script src="{{STATIC_URL}}hammer/hammer.js"></script>
+{% if user.is_authenticated %}
+<script>
+    window.jQuery( function(){
+        $.Hammer({{json|safe}});
+    });
+</script>
+{% endif %}
+{% endblock %}
+{% block javascript_templates %}
+<script type="text/html" id="tmpl-hammer-item">{% include 'hammer/jstmpl/hammer-item.html' %}</script>
+<script type="text/html" id="tmpl-hammer-entry">{% include 'hammer/jstmpl/hammer-entry.html' %}</script>
+<script type="text/html" id="tmpl-hammer-settings">{% include 'hammer/jstmpl/hammer-settings.html' %}</script>
+<script type="text/html" id="tmpl-user-settings">{% include 'hammer/jstmpl/user-settings.html' %}</script>
+{% endblock %}

@@ -1,0 +1,13 @@
+<div class="hammer-entry" data-bind="click: $root.selectHammer, css:{ 'active': $root.selectedHammer()===$data, 'shared-hammer-entry': shared }">
+    <div class="row">
+        <div class="col-md-5 col-xs-10">
+            <span class="hammer-entry-name" data-bind="text: name"></span> 
+        </div>
+        <div class="col-md-5 col-xs-2">
+            <span class="hammer-entry-date" data-bind="text: $root.formatDate( created )"></span>
+        </div>
+        <div class="col-md-2 col-xs-2 text-right">
+            <span data-bind="text: items().length"></span> item<!-- ko ifnot: items().length==1 -->s<!-- /ko -->
+        </div>
+    </div>
+</div>

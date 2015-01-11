@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+    <div class="header">
+        <div class="row">
+            <div class="col-xs-1">
+                <span class="app-title" data-bind="click: unselectHammer, style: { cursor: 'pointer' }">LH</span>
+           </div>
+           <div class="col-xs-10">
+                <!-- ko if: selectedHammer -->
+                <div class="header-hammer-title">
+                   <span class="hammer-title" data-bind="text: selectedHammer().name"></span> 
+                <!-- ko ifnot: selectedHammer().shared -->
+                    <a href="#" class="btnz btnz-warning btnz-xs" title="Hammer settings" data-bind="click: selectedHammer().toggleSettings">
+                        <span class="glyphicon glyphicon-cog"></span>
+                    </a>
+                <!-- /ko -->
+                </div>
+                <!-- /ko -->
+               
+           </div>
+            <div class="col-xs-1 text-right">
+                {% if user.is_authenticated %}
+                    <div class="dropdown user-dropdown">
+                        <button data-toggle="dropdown" type="button" class="btn btn-xs btn-link dropdown-toggle">
+                            <span class="glyphicon glyphicon-user"></span> {{user.username}} <span class="caret"></span></button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="#"  data-toggle="modal" data-target="#settings-modal">
+                                <span class="glyphicon glyphicon-cog"></span> Preferences</a></li>
+                            {% if user.is_staff %}<li><a href="/admin/" target="_blank">Admin</a></li>{% endif %}
+                            <li><a href="{% url "logout" %}">
+                                <span class="glyphicon glyphicon-logout"></span> Logout</a></li>
+                        </ul>
+                    </div>
+                {% else %}
+                <a href="{% url "auth" %}">Login/Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% block container %}
+    <div class="row">
+    {% block page %}{% endblock %}
+    </div>
+{% endblock container %}
+</div>
+{% endblock body %}
+
+{% block css %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+<link rel="stylesheet" href="{{STATIC_URL}}hammer/site.css" />
+{% endblock css %}
+
+

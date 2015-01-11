@@ -1,0 +1,195 @@
+{% extends 'page.html' %}
+
+{% block title %}Hammer - A shitty list making thing{% endblock %}
+{% block page %}
+    {% if user.is_authenticated %}
+    <div class="row">
+        <!-- <<<********* LEFT COLUMN *********** -->
+        <div class="col-xs-12 col-md-4">
+            <div class="hammer-wrapper">
+                <div class="hammer-form hammer-add-form">
+                    <form method="post" action="" data-bind="submit: submitNewHammer">
+                        <div class="input-group input-group-md">
+                            <input type="text" name="hammer-name" placeholder="New Hammer" class="form-control" /> 
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+                <span class="error" data-bind="ifnot: hammers().length">No hammers created yet!</span>
+                <div class="hammer-entries" data-bind="foreach:{ data: hammers }">
+                    <div class="hammer-entry" data-bind="click: $root.selectHammer, css:{ 'active': $root.selectedHammer()===$data }">
+                        <div class="row">
+                            <div class="col-md-8" href="#" data-bind="text: name"></div>
+                            <div class="col-md-4">
+                                <span data-bind="text: items().length"></span> items
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3>Shared with me</h3>
+                <div class="hammer-entries hammer-shared-entries" data-bind="foreach:{ data: shared_hammers }">
+                    <div class="hammer-entry" data-bind="click: $root.selectHammer, css:{ 'active': $root.selectedHammer()===$data }">
+                        <div class="row">
+                            <div class="col-md-8" href="#" data-bind="text: name"></div>
+                            <div class="col-md-4">
+                                <span data-bind="text: items().length"></span> items
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- ************ RIGHT COLUMN ********>>> -->
+        <div class="col-xs-12 col-md-8"> 
+            <div class="hammer-selected-wrapper" data-bind="with: selectedHammer">
+                <div class="hammer-selected" data-bind="css: theme">
+<!-- HAMMER HEADING -->                    
+                    <div class="hammer-heading">
+                        <!-- ko ifnot: shared -->
+                        <div class="hammer-options aright">
+                            <a class="hammer-setting" href="#" title="Hammer settings" data-bind="click: toggleSettings">
+                                <span class="glyphicon glyphicon-cog"></span>
+                            </a>
+                        </div>
+                        <!-- /ko -->
+                        
+<!-- HAMMER NAME -->
+                        <span class="hammer-title" data-bind="text: name, visible: !settingsVisible()"></span>
+                        
+<!-- HAMMER NAME FORM -->
+
+                    </div>
+<!-- HAMMER SETTINGS -->
+                    <div class="hammer-settings" data-bind="visible: settingsVisible, ifnot: shared">
+                        <h4>Name</h4>
+                        <div class="input-group col-md-12" data-bind="visible: settingsVisible">
+                            <input type="text" name="hammer-name" data-bind="value: name" class="form-control input-lg" /> 
+                        </div>
+                        <h4>Sharing</h4>
+                        <form method="post" action="" class="aright" data-bind="submit: submitNewShare">
+                            <div class="input-group col-md-9">
+                                <input type="text" name="sharee" class="form-control" placeholder="Enter email address or username to share" /> 
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary">
+                                        <span class="glyphicon glyphicon-plus-sign"></span> Share
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                        
+                        <table class="table table-condensed table-bordered table-inset hammer-shares">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th class="center">Add Items</th>
+                                    <th class="center">Remove Items</th>
+                                    <th class="center">Change Items</th>
+                                    <th class="center">X</th>
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach: { data: shares }">
+                                <tr>
+                                    <td data-bind="text: sharee"></td>
+                                    <td class="center"><input type="checkbox" data-bind="checked: can_add" /></td>
+                                    <td class="center"><input type="checkbox" data-bind="checked: can_remove" /></td>
+                                    <td class="center"><input type="checkbox" data-bind="checked: can_change" /></td>
+                                    <td class="center">
+                                        <a href="#" title="Delete share" data-bind="click: $parent.destroyShare">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="aright">
+                            <a class="text-danger" href="#" data-bind="click: $root.destroyHammer">Delete this hammer</a>
+                        </p>
+                    </div>
+
+<!-- HAMMER ITEM FORM -->
+                    <!-- ko if: can_add -->
+                    <div class="hammer-form">
+                        <form method="post" action="" data-bind="submit: submitNewItem">
+                            <div class="input-group input-group-md">
+                                <input type="text" max_length="100" name="hammer-name" data-bind="value: tempTitle" placeholder="Add item" class="form-control" />
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /ko -->
+
+<!-- HAMMER ITEMS -->
+                    <div data-bind="foreach:{ data: items }, hammerList: $data">
+                        <div class="hammer-item" data-bind="attr:{ 'data-pk': id }">
+                            <!-- ko if: $parent.can_change -->
+                            <div class="handle"></div>
+                            <!-- /ko -->
+                            <div data-bind="visible: !editing()" class="hammer-item-form">
+                                <div class="item-settings btn-group pull-right">
+                                   <!-- ko if: $parent.can_change -->
+                                   <a href="#" data-bind="click: $parent.editItem" title="Edit item" class="btn btn-xs btn-default">
+                                       <span class="glyphicon glyphicon-pencil"></span>
+                                    </a>
+                                    <!-- /ko -->
+                                   <!-- ko if: $parent.can_remove -->
+                                   <a href="#" data-bind="click: $parent.removeItem" title="Delete item" class="btn btn-xs btn-danger">
+                                       <span class="glyphicon glyphicon-remove"></span>
+                                    </a>
+                                    <!-- /ko -->
+                                </div>
+                                <div class="item-title">
+                               <!-- ko if: $parent.can_change -->
+                                   <a href="#" data-bind="click: $parent.editItem, text: title"></a>
+                                <!-- /ko -->
+                                <!-- ko ifnot: $parent.can_change -->
+                                    <span data-bind="text: title"></span>
+                                <!-- /ko -->
+                                    
+                                </div>
+                            </div>
+                            <div data-bind="visible: editing">
+                                <form data-bind="submit: $parent.editItem.bind( $parent, $data ), blurSubmit: true" method="post" action="">
+                                    <div class="input-group col-md-8">
+                                        <input type="text" name="hammer-name" data-bind="value: title" class="form-control" /> 
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+<!-- /HAMMER ITEMS -->
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <h4>not logged in</h4>
+    <p>You must be logged in</p>
+    <p><a href="{% url "auth" %}">Login/register</a></p>
+    {% endif %}
+{% endblock %}
+
+{% block css %}
+{{block.super}}
+<link rel="stylesheet" href="{{STATIC_URL}}hammer/themes/default.css" />
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/store.js/1.3.14/store.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+<script src="{{STATIC_URL}}hammer/hammer.js"></script>
+<script>
+    window.jQuery( function(){
+        $.Hammer({{json|safe}});
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,40 @@
+<!-- THIS IS A KNOCKOUT TEMPLATE WHICH WILL BE INCLUDED INSIDE A SCRIPT TAG -->
+<div class="hammer-wrapper">
+    
+    <div class="hammer-form">
+        <form method="post" action="" data-bind="submit: submitNewHammer">
+            <div class="input-group input-group-md">
+                <input type="text" name="hammer-name" placeholder="New Hammer" class="form-control" /> 
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                </span>
+            </div>
+        </form>
+    </div>
+    
+    <h3>My Hammers</h3>
+    <span class="error" data-bind="ifnot: hammers().length">No hammers created yet!</span>
+    <div class="hammer-entries" data-bind="foreach:{ data: hammers }">
+        <div class="hammer-entry" data-bind="click: $root.selectHammer, css:{ 'active': $root.selectedHammer()===$data }">
+            <div class="row">
+                <div class="col-md-8" href="#" data-bind="text: name"></div>
+                <div class="col-md-4">
+                    <span data-bind="text: items().length"></span> items
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <h3>Shared with me</h3>
+    <div class="hammer-entries hammer-shared-entries" data-bind="foreach:{ data: shared_hammers }">
+        <div class="hammer-entry" data-bind="click: $root.selectHammer, css:{ 'active': $root.selectedHammer()===$data }">
+            <div class="row">
+                <div class="col-md-8" href="#" data-bind="text: name"></div>
+                <div class="col-md-4">
+                    <span data-bind="text: items().length"></span> items
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>

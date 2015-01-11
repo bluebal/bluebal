@@ -1,0 +1,44 @@
+<div class="hammer-item" data-bind="attr:{ 'data-pk': id }, event: { 'dblclick': $parent.editItem }">
+        <div class="row">
+        <div class="col-md-11">
+            <div class="hammer-item-body" data-bind="css: status">
+                <div data-bind="visible: !editing()" class="hammer-item-form">
+                    <div class="item-title"><span data-bind="text: $index()+1"></span>. 
+                   <!-- ko if: $parent.can_change -->
+                       <a href="#" data-bind="click: _toggleStatus( 'complete', 'idle' ), text: title" class="item-text"></a>
+                    <!-- /ko -->
+                    <!-- ko ifnot: $parent.can_change -->
+                        <span data-bind="text: title" class="item-text"></span>
+                    <!-- /ko -->
+                        
+                    </div>
+                </div>
+                <div data-bind="visible: editing">
+                    <!-- ko if: $parent.can_change -->
+                    <div class="input-group input-group-md">
+                        <input type="text" max_length="100" data-bind="value: title" name="hammer-name" placeholder="Add item" class="form-control" />
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn"><span class="glyphicon glyphicon-check"></span></button>
+                        </span>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: $parent.can_remove -->
+                    <div class="text-right">
+                        <a href="#" data-bind="click: $parent.removeItem" title="Delete item" class="text-danger">
+                            <small>Delete this item</small>
+                        </a>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+            
+        </div>
+        <div class="col-md-1 text-right">
+            <!-- ko if: $parent.can_change -->
+            <div class="handle">
+                <span class="glyphicon glyphicon-sort"></span>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+</div>
